@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
+import { BcryptAdapter } from 'src/infra/cryptography/bcrypt-adapter';
+import { CryptographyModule } from 'src/infra/cryptography/cryptography.module';
 import { UserDbModule } from 'src/infra/database/users/user-database.module';
 import { UserRepository } from 'src/infra/database/users/user-repository';
 import { SERVICES } from './constants';
-import { UserController } from './controllers/user.controller';
-import { UserService } from './services/user.service';
+import { CreateUserController } from './controllers/create-user.controller';
+import { CreateUserService } from './services/create-user.service';
 
 @Module({
-  imports: [UserDbModule],
-  controllers: [UserController],
+  imports: [UserDbModule, CryptographyModule],
+  controllers: [CreateUserController],
   providers: [
     {
-      provide: SERVICES.LOAD_USERS_SERVICE,
-      useFactory: (userRepository: UserRepository) =>
-        new UserService(userRepository),
-      inject: [UserRepository],
+      provide: SERVICES.CREATE_USER_SERVICE,
+      useFactory: (userRepository: UserRepository, hasher: BcryptAdapter) =>
+        new CreateUserService(userRepository, hasher, userRepository),
+      inject: [UserRepository, BcryptAdapter],
     },
     UserRepository,
   ],

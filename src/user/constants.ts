@@ -1,3 +1,3 @@
 export const SERVICES = {
-  LOAD_USERS_SERVICE: 'load_users_service',
+  CREATE_USER_SERVICE: 'create_user_service',
 };
