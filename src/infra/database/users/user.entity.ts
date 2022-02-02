@@ -24,9 +24,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
-  company: string;
-
   @Column({ default: true })
   status: boolean;
 
@@ -50,7 +47,6 @@ export class User {
     this.phone = phone;
     this.email = email;
     this.password = password;
-    this.company = null;
     if (!this.created_at) this.created_at = new Date();
     if (!this.updated_at) this.updated_at = new Date();
     this.deleted_at = null;
