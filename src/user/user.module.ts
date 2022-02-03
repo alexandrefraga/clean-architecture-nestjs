@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { BcryptAdapter } from 'src/infra/cryptography/bcrypt-adapter';
-import { CryptographyModule } from 'src/infra/cryptography/cryptography.module';
-import { UserDbModule } from 'src/infra/database/users/user-database.module';
-import { UserRepository } from 'src/infra/database/users/user-repository';
+import { BcryptAdapter } from '../infra/cryptography/bcrypt-adapter';
+import { CryptographyModule } from '../infra/cryptography/cryptography.module';
+import { UserDbModule } from '../infra/database/users/user-database.module';
+import { UserRepository } from '../infra/database/users/user-repository';
 import { SERVICES } from './constants';
 import { CreateUserController } from './controllers/create-user.controller';
 import { CreateUserService } from './services/create-user.service';
