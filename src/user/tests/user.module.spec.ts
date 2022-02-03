@@ -1,19 +1,20 @@
-import { Test } from '@nestjs/testing';
-import { Connection, getConnection } from 'typeorm';
+import { Test, TestingModule } from '@nestjs/testing';
 import { UserModule } from '../user.module';
 
 describe('User Module', () => {
-  let connection: Connection;
-  afterAll(() => {
-    connection = getConnection();
-    connection.close();
-  });
+  let module: TestingModule;
 
-  it('should behave...', async () => {
-    const module = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [UserModule],
     }).compile();
+  });
 
+  afterAll(() => {
+    module.close();
+  });
+
+  it('should be defined', async () => {
     expect(module).toBeDefined();
   });
 });
