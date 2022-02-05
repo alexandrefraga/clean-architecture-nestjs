@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BcryptAdapter } from '../../infra/cryptography/bcrypt-adapter';
-import { UserRepository } from '../../infra/database/users/user-repository';
+import { UserCustomRepository } from '../../infra/database/users/user-custom-repository';
 import { CreateUserDto } from '../dtos/create-user-dto';
 import { CreateUserService } from '../services/create-user.service';
 
 describe('CreateUserService', () => {
   let createUserService: CreateUserService;
   let bcryptAdapter: BcryptAdapter;
-  let userRepository: UserRepository;
+  let userRepository: UserCustomRepository;
   let fakeUser: CreateUserDto;
 
   beforeAll(() => {
@@ -24,12 +24,14 @@ describe('CreateUserService', () => {
       providers: [
         {
           provide: CreateUserService,
-          useFactory: (userRepository: UserRepository, hasher: BcryptAdapter) =>
-            new CreateUserService(userRepository, hasher, userRepository),
-          inject: [UserRepository, BcryptAdapter],
+          useFactory: (
+            userRepository: UserCustomRepository,
+            hasher: BcryptAdapter,
+          ) => new CreateUserService(userRepository, hasher, userRepository),
+          inject: [UserCustomRepository, BcryptAdapter],
         },
         {
-          provide: UserRepository,
+          provide: UserCustomRepository,
           useValue: {
             loadByEmail: jest.fn().mockResolvedValue(undefined),
             createUser: jest.fn().mockResolvedValue({ id: 'any_id' }),
@@ -45,7 +47,7 @@ describe('CreateUserService', () => {
     }).compile();
 
     createUserService = module.get<CreateUserService>(CreateUserService);
-    userRepository = module.get(UserRepository);
+    userRepository = module.get(UserCustomRepository);
     bcryptAdapter = module.get(BcryptAdapter);
   });
 

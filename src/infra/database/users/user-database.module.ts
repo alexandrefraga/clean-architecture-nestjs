@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfig } from '../../config/typeorm/typeormConfig';
+import { UserCustomRepository } from './user-custom-repository';
 import { UserRepository } from './user-repository';
 
 @Module({
@@ -8,6 +9,14 @@ import { UserRepository } from './user-repository';
     TypeOrmModule.forRoot(typeormConfig),
     TypeOrmModule.forFeature([UserRepository]),
   ],
-  exports: [TypeOrmModule],
+  providers: [
+    {
+      provide: UserCustomRepository,
+      useFactory: (userRepository: UserRepository) =>
+        new UserCustomRepository(userRepository),
+      inject: [UserRepository],
+    },
+  ],
+  exports: [UserCustomRepository],
 })
 export class UserDbModule {}
