@@ -1,5 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { getManager } from 'typeorm';
 import { AppModule } from './app.module';
+import { User } from './infra/database/users/user.entity';
 
 describe('User Module', () => {
   let module: TestingModule;
@@ -7,14 +10,18 @@ describe('User Module', () => {
   beforeAll(async () => {
     module = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(getRepositoryToken(User))
+      .useValue({})
+      .compile();
   });
 
   afterAll(() => {
-    module.close();
+    module.close;
+    getManager().connection.close();
   });
 
-  it('should be defined', async () => {
+  it('should be defined', () => {
     expect(module).toBeDefined();
   });
 });

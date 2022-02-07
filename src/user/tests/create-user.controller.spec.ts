@@ -1,6 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SERVICES } from '../constants';
 import { CreateUserController } from '../controllers/create-user.controller';
 import { CreateUserDto } from '../dtos/create-user-dto';
 import { CreateUserService } from '../services/create-user.service';
@@ -24,7 +23,7 @@ describe('CreateUserController', () => {
       controllers: [CreateUserController],
       providers: [
         {
-          provide: SERVICES.CREATE_USER_SERVICE,
+          provide: CreateUserService,
           useValue: {
             create: jest.fn().mockResolvedValue({ id: 'any_id' }),
           },
@@ -34,7 +33,7 @@ describe('CreateUserController', () => {
 
     createUsercontroller =
       module.get<CreateUserController>(CreateUserController);
-    createUserService = module.get(SERVICES.CREATE_USER_SERVICE);
+    createUserService = module.get(CreateUserService);
   });
 
   it('should be defined', () => {

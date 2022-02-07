@@ -1,5 +1,7 @@
-import { UserCustomRepository } from '../users/user-custom-repository';
-import { UserRepository } from '../users/user-repository';
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepository } from 'typeorm';
+import { UserCustomRepository } from './user-custom-repository';
+import { User } from './user.entity';
 
 const fakeUser = {
   id: 'user_id',
@@ -11,7 +13,7 @@ const fakeUser = {
 
 jest.mock('typeorm', () => ({
   ...jest.requireActual<object>('typeorm'),
-  getCustomRepository: jest.fn().mockImplementation(() => ({
+  getRepository: jest.fn().mockImplementation(() => ({
     create: jest.fn().mockResolvedValue(fakeUser),
     save: jest.fn().mockResolvedValue(fakeUser),
     findOne: jest.fn().mockResolvedValue(fakeUser),
@@ -19,12 +21,20 @@ jest.mock('typeorm', () => ({
 }));
 
 describe('User Custom Repository', () => {
-  let userRepository: UserRepository;
   let userCustomRepository: UserCustomRepository;
 
-  beforeAll(() => {
-    userRepository = new UserRepository();
-    userCustomRepository = new UserCustomRepository(userRepository);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: UserCustomRepository,
+          useFactory: () => new UserCustomRepository(getRepository(User)),
+        },
+      ],
+    }).compile();
+
+    userCustomRepository =
+      module.get<UserCustomRepository>(UserCustomRepository);
   });
 
   describe('CreateUser', () => {

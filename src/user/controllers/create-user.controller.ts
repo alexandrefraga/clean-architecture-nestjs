@@ -1,20 +1,10 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Inject,
-  Post,
-} from '@nestjs/common';
-import { SERVICES } from '../constants';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user-dto';
 import { CreateUserService } from '../services/create-user.service';
 
 @Controller('user')
 export class CreateUserController {
-  constructor(
-    @Inject(SERVICES.CREATE_USER_SERVICE)
-    private createUserService: CreateUserService,
-  ) {}
+  constructor(private createUserService: CreateUserService) {}
   @Post('/create')
   async handle(@Body() createUserDto: CreateUserDto): Promise<void> {
     const userIdOrError = await this.createUserService.create(createUserDto);
