@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeormConfig } from '../config/typeorm/typeormConfig';
-import { UserCustomRepository } from './users/user-custom-repository';
+import { UserCustomRepository } from './users/user-repository';
 import { User } from './users/user.entity';
 
 @Module({
@@ -9,4 +8,4 @@ import { User } from './users/user.entity';
   providers: [UserCustomRepository],
   exports: [TypeOrmModule, UserCustomRepository],
 })
-export class UserDbModule {}
+export class DatabaseModule {}

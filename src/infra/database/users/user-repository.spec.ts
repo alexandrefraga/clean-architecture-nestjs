@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepository } from 'typeorm';
-import { UserCustomRepository } from './user-custom-repository';
+import { UserCustomRepository } from './user-repository';
 import { User } from './user.entity';
 
 const fakeUser = {
@@ -20,8 +20,8 @@ jest.mock('typeorm', () => ({
   })),
 }));
 
-describe('User Custom Repository', () => {
-  let userCustomRepository: UserCustomRepository;
+describe('User Repository', () => {
+  let userRepository: UserCustomRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,14 +33,13 @@ describe('User Custom Repository', () => {
       ],
     }).compile();
 
-    userCustomRepository =
-      module.get<UserCustomRepository>(UserCustomRepository);
+    userRepository = module.get<UserCustomRepository>(UserCustomRepository);
   });
 
   describe('CreateUser', () => {
     it('Should return an userId if createUser on success', async () => {
       const { id, ...fakeData } = fakeUser;
-      const account = await userCustomRepository.createUser(fakeData);
+      const account = await userRepository.createUser(fakeData);
       expect(account).toBeTruthy();
       expect(account.id).toBe(id);
     });
@@ -48,7 +47,7 @@ describe('User Custom Repository', () => {
 
   describe('LoadByEmail', () => {
     it('Should return correct data on success', async () => {
-      const response = await userCustomRepository.loadByEmail(fakeUser.email);
+      const response = await userRepository.loadByEmail(fakeUser.email);
       expect(response).toBeTruthy();
       expect(response).toEqual({
         id: fakeUser.id,

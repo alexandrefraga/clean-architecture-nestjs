@@ -1,15 +1,15 @@
 import { CreateUserUsecase } from '../domain/create-user-usecase';
-import { CreateUser } from '../protocols/create-user.protocols';
-import { Hasher } from '../protocols/hasher.protocols';
-import { LoadUserByEmail } from '../protocols/load-user-by-email.protocols';
+import { CreateUserRepository } from '../protocols/create-user-repository';
+import { Hasher } from '../protocols/hasher';
+import { LoadUserByEmailRepository } from '../protocols/load-user-by-email-repository';
 
 type input = { name: string; phone: string; email: string; password: string };
 
 export class CreateUserService implements CreateUserUsecase {
   constructor(
-    private loadUserbyEmailRepository: LoadUserByEmail,
+    private loadUserbyEmailRepository: LoadUserByEmailRepository,
     private hasher: Hasher,
-    private createUserRepository: CreateUser,
+    private createUserRepository: CreateUserRepository,
   ) {}
 
   async create({

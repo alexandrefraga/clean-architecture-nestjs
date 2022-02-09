@@ -1,10 +1,10 @@
-import { LoadUserById } from '../protocols/load-user-by-id.protocols';
+import { LoadUserByIdRepository } from '../protocols/load-user-by-id-repository';
 import { UpdateUserService } from '../services/update-user.service';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 describe('UpdateUser Service', () => {
   let updateUserService: UpdateUserService;
-  let userRepository: MockProxy<LoadUserById>;
+  let userRepository: MockProxy<LoadUserByIdRepository>;
 
   beforeEach(() => {
     userRepository = mock();

@@ -1,12 +1,12 @@
-export interface CreateUser {
+export interface CreateUserRepository {
   createUser(user: {
     name: string;
     phone: string;
     email: string;
     password: string;
-  }): Promise<CreateUser.Output>;
+  }): Promise<CreateUserRepository.Output>;
 }
 
-export namespace CreateUser {
+export namespace CreateUserRepository {
   export type Output = { id: string };
 }

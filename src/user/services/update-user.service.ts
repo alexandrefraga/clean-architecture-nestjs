@@ -1,8 +1,8 @@
 import { UpdateUserUsecase } from '../domain/update-user-usecase';
-import { LoadUserById } from '../protocols/load-user-by-id.protocols';
+import { LoadUserByIdRepository } from '../protocols/load-user-by-id-repository';
 
 export class UpdateUserService implements UpdateUserUsecase {
-  constructor(private loadUserRepository: LoadUserById) {}
+  constructor(private loadUserRepository: LoadUserByIdRepository) {}
   async update(
     id: string,
     data: { name: string; phone: string },

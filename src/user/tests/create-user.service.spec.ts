@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BcryptAdapter } from '../../infra/cryptography/bcrypt-adapter';
-import { UserCustomRepository } from '../../infra/database/users/user-custom-repository';
+import { UserCustomRepository } from '../../infra/database/users/user-repository';
 import { CreateUserDto } from '../dtos/create-user-dto';
 import { CreateUserService } from '../services/create-user.service';
 
