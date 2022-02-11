@@ -5,7 +5,7 @@ import { CreateUserService } from '../services/create-user.service';
 @Controller('user')
 export class CreateUserController {
   constructor(private createUserService: CreateUserService) {}
-  @Post('/create')
+  @Post()
   async handle(@Body() createUserDto: CreateUserDto): Promise<void> {
     const userIdOrError = await this.createUserService.create(createUserDto);
     if (userIdOrError instanceof Error) {

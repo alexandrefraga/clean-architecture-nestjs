@@ -46,7 +46,7 @@ describe('Create User (e2e)', () => {
 
   it('should creation an user', () => {
     return request(app.getHttpServer())
-      .post('/user/create')
+      .post('/user')
       .send({
         name: 'Alexandre',
         phone: '11999888777',
@@ -61,7 +61,7 @@ describe('Create User (e2e)', () => {
       new User('Alexandre', '11999888777', 'alexandre@mail.com', '123456'),
     );
     return request(app.getHttpServer())
-      .post('/user/create')
+      .post('/user')
       .send({
         name: 'Alexandre',
         phone: '11999888777',
