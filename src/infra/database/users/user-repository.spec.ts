@@ -9,12 +9,13 @@ const fakeUser = {
   phone: 'any_phone',
   email: 'any_email@mail.com',
   password: 'any_password',
+  status: true
 };
 
 jest.mock('typeorm', () => ({
   ...jest.requireActual<object>('typeorm'),
   getRepository: jest.fn().mockImplementation(() => ({
-    create: jest.fn().mockResolvedValue({ ...fakeUser, status: true }),
+    create: jest.fn().mockResolvedValue({ ...fakeUser }),
     save: jest.fn().mockResolvedValue(fakeUser),
     findOne: jest.fn().mockImplementation((email, _) => fakeUser),
     update: jest.fn().mockResolvedValue({ affectedRows: 1 })
@@ -51,7 +52,7 @@ describe('User Repository', () => {
       expect(createSpy).toHaveBeenCalledTimes(1)
       expect(createSpy).toHaveBeenCalledWith(fakeData)
       expect(saveSpy).toHaveBeenCalledTimes(1)
-      expect(saveSpy).toHaveBeenCalledWith({ ...fakeUser, status: true })
+      expect(saveSpy).toHaveBeenCalledWith({ ...fakeUser })
     })
 
     it('Should return an userId if createUser on success', async () => {
@@ -93,6 +94,43 @@ describe('User Repository', () => {
       expect(response).toEqual({
         id: fakeUser.id,
         name: fakeUser.name,
+      });
+    });
+  });
+  describe('LoadById', () => {
+    it('Should call with correct data', async () => {
+      const findSpy= jest.spyOn(userRepository, 'findOne')
+
+      await userCustomRepository.loadById(fakeUser.id)
+
+      expect(findSpy).toHaveBeenCalledWith({ id: fakeUser.id })      
+    });
+
+    it('Should return undefined if user not found', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(undefined)
+
+      const response = await userCustomRepository.loadById(fakeUser.id)
+
+      expect(response).toBeUndefined()
+    })
+
+    it('Should throw if UserRepository throws', async () => {
+      jest.spyOn(userRepository, 'findOne').mockRejectedValue(new Error())
+
+      const promise = userCustomRepository.loadById(fakeUser.id)
+
+      await expect(promise).rejects.toThrowError()
+    })
+
+    it('Should return correct data on success', async () => {
+      const response = await userCustomRepository.loadById(fakeUser.id)
+      expect(response).toBeTruthy();
+      expect(response).toEqual({
+        id: fakeUser.id,
+        name: fakeUser.name,
+        phone: fakeUser.phone,
+        email: fakeUser.email,
+        status: fakeUser.status,
       });
     });
   });

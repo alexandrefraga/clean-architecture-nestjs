@@ -5,10 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUserRepository } from 'src/user/protocols/update-user-repository';
+import { LoadUserByIdRepository } from 'src/user/protocols/load-user-by-id-repository';
 
 @Injectable()
 export class UserCustomRepository
-  implements CreateUserRepository, LoadUserByEmailRepository, UpdateUserRepository
+  implements CreateUserRepository, LoadUserByEmailRepository, LoadUserByIdRepository,UpdateUserRepository
 {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
@@ -30,6 +31,17 @@ export class UserCustomRepository
       { withDeleted: true },
     );
     return user && { id: user.id, name: user.name };
+  }
+
+  async loadById(id: string): Promise<LoadUserByIdRepository.OutPut> {
+    const user =  await this.userRepository.findOne({ id })
+    return user && {
+      id: user.id,
+      name: user.name,
+      phone: user.phone,
+      email: user.email,
+      status: user.status
+    }
   }
 
   async updateUser(id: string, data: { name: string, phone: string }): Promise<void> {
