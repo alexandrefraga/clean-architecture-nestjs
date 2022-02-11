@@ -19,7 +19,7 @@ export class UserCustomRepository
     email: string;
     password: string;
   }): Promise<CreateUserRepository.Output> {
-    const user = this.userRepository.create(data);
+    const user = await this.userRepository.create(data);
     const userAccount = await this.userRepository.save(user);
     return userAccount && { id: userAccount.id };
   }
