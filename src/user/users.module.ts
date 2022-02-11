@@ -5,10 +5,12 @@ import { CryptographyModule } from '../infra/cryptography/cryptography.module';
 import { CreateUserController } from './controllers/create-user.controller';
 import { CreateUserService } from './services/create-user.service';
 import { DatabaseModule } from '../infra/database/database.module';
+import { UpdateUserController } from './controllers/update-user.controller';
+import { UpdateUserService } from './services/update-user.service';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
-  controllers: [CreateUserController],
+  controllers: [CreateUserController, UpdateUserController],
   providers: [
     {
       provide: CreateUserService,
@@ -17,6 +19,13 @@ import { DatabaseModule } from '../infra/database/database.module';
         hasher: BcryptAdapter,
       ) => new CreateUserService(userRepository, hasher, userRepository),
       inject: [UserCustomRepository, BcryptAdapter],
+    },
+    {
+      provide: UpdateUserService,
+      useFactory: (
+        userRepository: UserCustomRepository,
+      ) => new UpdateUserService(userRepository, userRepository),
+      inject: [UserCustomRepository],
     },
   ],
 })
