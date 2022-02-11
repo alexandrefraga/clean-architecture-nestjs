@@ -6,7 +6,8 @@ export class UpdateUserService implements UpdateUserUsecase {
   async update(
     id: string,
     data: { name: string; phone: string },
-  ): Promise<void> {
+  ): Promise<any> {
     await this.loadUserRepository.loadById(id);
+    return new Error('user not found')
   }
 }
