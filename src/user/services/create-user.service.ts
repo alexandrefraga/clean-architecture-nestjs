@@ -7,7 +7,7 @@ type input = { name: string; phone: string; email: string; password: string };
 
 export class CreateUserService implements CreateUserUsecase {
   constructor(
-    private loadUserbyEmailRepository: LoadUserByEmailRepository,
+    private loadUserByEmailRepository: LoadUserByEmailRepository,
     private hasher: Hasher,
     private createUserRepository: CreateUserRepository,
   ) {}
@@ -18,7 +18,7 @@ export class CreateUserService implements CreateUserUsecase {
     email,
     password,
   }: input): Promise<{ id: string } | Error> {
-    const emailInUse = await this.loadUserbyEmailRepository.loadByEmail(email);
+    const emailInUse = await this.loadUserByEmailRepository.loadByEmail(email);
     if (!emailInUse) {
       const hashedPassword = await this.hasher.hash(password);
       return await this.createUserRepository.createUser({

@@ -4,10 +4,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
+import { UpdateUserRepository } from 'src/user/protocols/update-user-repository';
 
 @Injectable()
 export class UserCustomRepository
-  implements CreateUserRepository, LoadUserByEmailRepository
+  implements CreateUserRepository, LoadUserByEmailRepository, UpdateUserRepository
 {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
@@ -29,5 +30,9 @@ export class UserCustomRepository
       { withDeleted: true },
     );
     return user && { id: user.id, name: user.name };
+  }
+
+  async updateUser(id: string, data: { name: string, phone: string }): Promise<void> {
+    await this.userRepository.update({ id }, { ...data })
   }
 }

@@ -17,6 +17,7 @@ jest.mock('typeorm', () => ({
     create: jest.fn().mockResolvedValue(fakeUser),
     save: jest.fn().mockResolvedValue(fakeUser),
     findOne: jest.fn().mockResolvedValue(fakeUser),
+    update: jest.fn().mockResolvedValue({ affectedRows: 1 })
   })),
 }));
 
@@ -54,5 +55,16 @@ describe('User Repository', () => {
         name: fakeUser.name,
       });
     });
+  });
+
+  describe('UpdateUser', () => {
+    it('Should return undefined on success', async () => {
+      const response = await userRepository.updateUser('any_id', {
+        name: 'other_name',
+        phone: 'other_phone',
+      })
+
+      expect(response).toBeUndefined()
+    })
   });
 });
