@@ -6,6 +6,7 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUserRepository } from 'src/user/protocols/update-user-repository';
 import { LoadUserByIdRepository } from 'src/user/protocols/load-user-by-id-repository';
+import { DeleteUserRepository } from 'src/user/protocols/delete-user-repository';
 
 @Injectable()
 export class UserCustomRepository
@@ -13,7 +14,8 @@ export class UserCustomRepository
     CreateUserRepository,
     LoadUserByEmailRepository,
     LoadUserByIdRepository,
-    UpdateUserRepository
+    UpdateUserRepository,
+    DeleteUserRepository
 {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
@@ -55,5 +57,9 @@ export class UserCustomRepository
     data: { name: string; phone: string },
   ): Promise<void> {
     await this.userRepository.update({ id }, { ...data });
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.userRepository.softDelete({ id });
   }
 }

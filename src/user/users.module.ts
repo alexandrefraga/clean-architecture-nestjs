@@ -8,6 +8,7 @@ import { DatabaseModule } from '../infra/database/database.module';
 import { UpdateUserController } from './controllers/update-user.controller';
 import { UpdateUserService } from './services/update-user.service';
 import { DeleteUserController } from './controllers/delete-user.controller';
+import { DeleteUserService } from './services/delete-user.service';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -29,6 +30,12 @@ import { DeleteUserController } from './controllers/delete-user.controller';
       provide: UpdateUserService,
       useFactory: (userRepository: UserCustomRepository) =>
         new UpdateUserService(userRepository, userRepository),
+      inject: [UserCustomRepository],
+    },
+    {
+      provide: DeleteUserService,
+      useFactory: (userRepository: UserCustomRepository) =>
+        new DeleteUserService(userRepository, userRepository),
       inject: [UserCustomRepository],
     },
   ],
