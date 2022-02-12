@@ -4,10 +4,8 @@ import * as request from 'supertest';
 import { UsersModule } from '../src/user/users.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../src/infra/database/users/user.entity';
-import { CreateUserDto } from '../src/user/dtos/create-user-dto';
-import { UpdateUserDto } from 'src/user/dtos/update-user-dto';
 
-describe('Update User (e2e)', () => {
+describe('Delete User (e2e)', () => {
   let app: INestApplication;
   let moduleFixture: TestingModule;
   let users: User[];
@@ -18,9 +16,7 @@ describe('Update User (e2e)', () => {
       const condition = Object.entries(data)[0];
       return users.find((user) => user[condition[0]] === condition[1]);
     }),
-    update: jest.fn().mockImplementation(({ name, phone }: UpdateUserDto) => {
-      return { affectedRows: 1 };
-    }),
+    softDelete: jest.fn().mockReturnValue({ affected: 1 }),
   };
 
   const fakeUser = new User(
@@ -49,28 +45,18 @@ describe('Update User (e2e)', () => {
 
   it('should return 400 if user not found', () => {
     return request(app.getHttpServer())
-      .put(`/user/${fakeUser.id}`)
-      .send({
-        name: 'Alexandre',
-        phone: '11999888777',
-        email: 'alexandre@mail.com',
-        password: '123456',
-      })
+      .delete(`/user/${fakeUser.id}`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toBe('user not found');
       });
   });
 
-  it('should update an user', () => {
+  it('should delete user', () => {
     users.push(fakeUser);
 
     return request(app.getHttpServer())
-      .put(`/user/${fakeUser.id}`)
-      .send({
-        name: 'Alexandre Fraga',
-        phone: '11999888777',
-      })
+      .delete(`/user/${fakeUser.id}`)
       .expect(200);
   });
 });
