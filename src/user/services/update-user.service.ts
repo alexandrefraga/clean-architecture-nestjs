@@ -12,10 +12,10 @@ export class UpdateUserService implements UpdateUserUsecase {
     data: { name: string; phone: string },
   ): Promise<null | Error> {
     const user = await this.loadUserRepository.loadById(id);
-    if(!user) {
-      return new Error('user not found')
+    if (!user) {
+      return new Error('user not found');
     }
     await this.updateUserRepository.updateUser(id, data);
-    return null
+    return null;
   }
 }

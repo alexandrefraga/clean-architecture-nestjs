@@ -9,7 +9,11 @@ import { LoadUserByIdRepository } from 'src/user/protocols/load-user-by-id-repos
 
 @Injectable()
 export class UserCustomRepository
-  implements CreateUserRepository, LoadUserByEmailRepository, LoadUserByIdRepository,UpdateUserRepository
+  implements
+    CreateUserRepository,
+    LoadUserByEmailRepository,
+    LoadUserByIdRepository,
+    UpdateUserRepository
 {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
@@ -34,17 +38,22 @@ export class UserCustomRepository
   }
 
   async loadById(id: string): Promise<LoadUserByIdRepository.OutPut> {
-    const user =  await this.userRepository.findOne({ id })
-    return user && {
-      id: user.id,
-      name: user.name,
-      phone: user.phone,
-      email: user.email,
-      status: user.status
-    }
+    const user = await this.userRepository.findOne({ id });
+    return (
+      user && {
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        status: user.status,
+      }
+    );
   }
 
-  async updateUser(id: string, data: { name: string, phone: string }): Promise<void> {
-    await this.userRepository.update({ id }, { ...data })
+  async updateUser(
+    id: string,
+    data: { name: string; phone: string },
+  ): Promise<void> {
+    await this.userRepository.update({ id }, { ...data });
   }
 }

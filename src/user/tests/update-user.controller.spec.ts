@@ -12,7 +12,7 @@ describe('UpdateUserController', () => {
   beforeAll(() => {
     fakeUpdateUserDto = {
       name: 'any_name',
-      phone: '51999888777'
+      phone: '51999888777',
     };
   });
 
@@ -68,7 +68,10 @@ describe('UpdateUserController', () => {
   });
 
   it('should return undefined on success', async () => {
-    const response = await updateUsercontroller.handle('userId', fakeUpdateUserDto);
+    const response = await updateUsercontroller.handle(
+      'userId',
+      fakeUpdateUserDto,
+    );
 
     expect(response).toBeUndefined();
   });
