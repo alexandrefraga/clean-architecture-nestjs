@@ -2,7 +2,7 @@ import { CreateUserRepository } from 'src/user/protocols/create-user-repository'
 import { LoadUserByEmailRepository } from 'src/user/protocols/load-user-by-email-repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUserRepository } from 'src/user/protocols/update-user-repository';
 import { LoadUserByIdRepository } from 'src/user/protocols/load-user-by-id-repository';
@@ -36,7 +36,16 @@ export class UserCustomRepository
       { email },
       { withDeleted: true },
     );
-    return user && { id: user.id, name: user.name };
+    return (
+      user && {
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        password: user.password,
+        status: user.status,
+      }
+    );
   }
 
   async loadById(id: string): Promise<LoadUserByIdRepository.OutPut> {

@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsersModule } from '../src/user/users.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../src/infra/database/users/user.entity';
+import { User } from '../src/infra/database/entities/user.entity';
 import { CreateUserDto } from '../src/user/dtos/create-user-dto';
 
 describe('Create User (e2e)', () => {

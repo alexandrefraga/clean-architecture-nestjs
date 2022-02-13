@@ -65,9 +65,10 @@ describe('CreateUserService', () => {
   });
 
   it('should return an Error if already exists email provided', async () => {
+    const fakeUserModel = { ...fakeUser, id: 'any_id', status: true };
     jest
       .spyOn(userRepository, 'loadByEmail')
-      .mockResolvedValueOnce({ id: 'any_id', name: 'any_name' });
+      .mockResolvedValueOnce(fakeUserModel);
 
     const response = await createUserService.create(fakeUser);
 

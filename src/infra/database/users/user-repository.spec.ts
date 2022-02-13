@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepository, Repository } from 'typeorm';
 import { UserCustomRepository } from './user-repository';
-import { User } from './user.entity';
+import { User } from '../entities/user.entity';
 
 const fakeUser = {
   id: 'user_id',
@@ -97,10 +97,7 @@ describe('User Repository', () => {
     it('Should return correct data on success', async () => {
       const response = await userCustomRepository.loadByEmail(fakeUser.email);
       expect(response).toBeTruthy();
-      expect(response).toEqual({
-        id: fakeUser.id,
-        name: fakeUser.name,
-      });
+      expect(response).toEqual(fakeUser);
     });
   });
   describe('LoadById', () => {

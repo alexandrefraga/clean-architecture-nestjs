@@ -1,7 +1,8 @@
+import { DeleteUserUsecase } from '../domain/delete-user-usecase';
 import { DeleteUserRepository } from '../protocols/delete-user-repository';
 import { LoadUserByIdRepository } from '../protocols/load-user-by-id-repository';
 
-export class DeleteUserService {
+export class DeleteUserService implements DeleteUserUsecase {
   constructor(
     private loadUserRepository: LoadUserByIdRepository,
     private deleteUserRepository: DeleteUserRepository,
